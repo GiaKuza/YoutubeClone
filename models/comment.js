@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const { replySchema } = require("../models/reply");
+
 const commentSchema = mongoose.Schema({
 	text: { type: String, required: true, minlength: 1, maxLength: 150 },
 	dateAdded: { type: Date, default: Date.now },
@@ -7,6 +10,6 @@ const commentSchema = mongoose.Schema({
 	videoId: { type: String, required: true, minlength: 4, maxlength: 50 },
 });
 
-const Comment = mongoose.mode("Comment", commentSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 exports.Comment = Comment;
