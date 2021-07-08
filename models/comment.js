@@ -8,3 +8,5 @@ const commentSchema = mongoose.Schema({
 });
 
 const Comment = mongoose.mode("Comment", commentSchema);
+
+exports.Comment = Comment;
