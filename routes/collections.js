@@ -16,12 +16,24 @@ router.post("/comments", async (req, res) => {
 	}
 });
 
-router.put("/comments/likes/:commentId", async (req, res) => {
+router.post("/comments/replies/:commentId", async (req, res) => {
+	try {
+		const reply = new Reply({
+			text: req.body.text,
+		});
+		const comment = await Comment.findById(req.params.commentId);
+		comment.reply.push(reply);
+		await comment.save();
+		return res.send(comment);
+	} catch (ex) {
+		return res.status(500).send(`Internal Server Error: ${ex}`);
+	}
+});
 
-    
+router.put("/comments/likes/:commentId", async (req, res) => {
 	try {
 		const comment = await Comment.findById(req.params.commentId);
-        comment.likes += 1; 
+		comment.likes += 1;
 		await comment.save();
 		return res.send(comment);
 	} catch (ex) {
@@ -30,10 +42,9 @@ router.put("/comments/likes/:commentId", async (req, res) => {
 });
 
 router.put("/comments/dislikes/:commentId", async (req, res) => {
-  
 	try {
 		const comment = await Comment.findById(req.params.commentId);
-        comment.dislikes += 1; 
+		comment.dislikes += 1;
 		await comment.save();
 		return res.send(comment);
 	} catch (ex) {
@@ -41,7 +52,4 @@ router.put("/comments/dislikes/:commentId", async (req, res) => {
 	}
 });
 
-
-
 module.exports = router;
-
